@@ -24,9 +24,10 @@ namespace Mario
         int i = 0;
         int temp = 0;
         int[] aftercheck = new int[] { 0, 0, 0, 0, 0, 0, 8, 0 };
-        int replay = 0,replay2 = 0,replay3 = 0;
+        int replay = 0,replay2 = 0,replay3 = 0,replay4 = 0;
         int jumpheight = 15;
         int state = 0; //  0為初始狀態 1為吃香菇後的狀態
+        int test = 0; // 測試用
         string MessageText;
         PictureBox none = new PictureBox();
         public class Pass1
@@ -82,6 +83,7 @@ namespace Mario
             MongoDatabase database = server.GetDatabase("Mario");
             //取得資料表
             MongoCollection<User> collection = database.GetCollection<User>("Alldata");
+            //重置狀態
             gameplayer.Text = "玩家: " + Name;
             var query = Query.EQ("Name", Name);
             var all_user = collection.Find(query);
@@ -130,13 +132,13 @@ namespace Mario
             this.screen.Image = Image.FromFile("background_1.png");
             this.screen.Left = 0;
             this.screen.Width = 1230;
-            this.pictureBox2.Image = Image.FromFile("background_2.png");
-            this.pictureBox2.Left = 1220;
-            this.pictureBox2.Width = 60;
-            this.pictureBox1.Image = Image.FromFile("background_1.png");
-            this.pictureBox1.Left = 1220;
-            this.pictureBox1.Width = 60;
-            this.pictureBox1.Visible = false;
+            this.map_2.Image = Image.FromFile("background_2.png");
+            this.map_2.Left = 1220;
+            this.map_2.Width = 60;
+            this.map_3.Image = Image.FromFile("background_3.png");
+            this.map_3.Left = 1220;
+            this.map_3.Width = 60;
+            this.map_3.Visible = false;
             //玩家
             this.gameplayer.BackColor = Color.Transparent;
             this.gameplayer.Parent = this.screen;
@@ -224,19 +226,57 @@ namespace Mario
             this.Coin6.BackColor = Color.Transparent;
             this.mushroom.Image = Image.FromFile("mushroom.gif");
             this.mushroom.BackColor = Color.Transparent;
-            this.Box5.Parent = this.pictureBox2;
-            this.Box6.Parent = this.pictureBox2;
-            this.Box7.Parent = this.pictureBox2;
-            this.Rock4.Parent = this.pictureBox2;
-            this.Rock5.Parent = this.pictureBox2;
-            this.Coin5.Parent = this.pictureBox2;
-            this.Coin6.Parent = this.pictureBox2;
-            this.mushroom.Parent = this.pictureBox2;
-            this.mushroom.Height = 28;
-            this.mushroom.Width = 28;
-            this.mushroom.Left = 460;
-            this.mushroom.Top = 340;
+            this.Box5.Parent = this.map_2;
+            this.Box6.Parent = this.map_2;
+            this.Box7.Parent = this.map_2;
+            this.Rock4.Parent = this.map_2;
+            this.Rock5.Parent = this.map_2;
+            this.Coin5.Parent = this.map_2;
+            this.Coin6.Parent = this.map_2;
+            this.mushroom.Parent = this.map_2;
             this.mushroom.Visible = false;
+            //map3
+            this.Rock2_1.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_1.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_1.BackColor = Color.Transparent;
+            this.Rock2_1.Parent = this.map_3;
+            this.Rock2_2.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_2.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_2.BackColor = Color.Transparent;
+            this.Rock2_2.Parent = this.map_3;
+            this.Rock2_3.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_3.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_3.BackColor = Color.Transparent;
+            this.Rock2_3.Parent = this.map_3;
+            this.Rock2_4.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_4.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_4.BackColor = Color.Transparent;
+            this.Rock2_4.Parent = this.map_3;
+            this.Rock2_5.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_5.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_5.BackColor = Color.Transparent;
+            this.Rock2_5.Parent = this.map_3;
+            this.Rock2_6.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_6.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_6.BackColor = Color.Transparent;
+            this.Rock2_6.Parent = this.map_3;
+            this.Rock2_7.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_7.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_7.BackColor = Color.Transparent;
+            this.Rock2_7.Parent = this.map_3;
+            this.Rock2_8.BackgroundImage = Image.FromFile("Rock2.png");
+            this.Rock2_8.BackgroundImageLayout = ImageLayout.Tile;
+            this.Rock2_8.BackColor = Color.Transparent;
+            this.Rock2_8.Parent = this.map_3;
+            this.Head.Image = Image.FromFile("Head.png");
+            this.Head.BackColor = Color.Transparent;
+            this.Head.Parent = this.map_3;
+            this.Head.Visible = false;
+            this.Bar.Image = Image.FromFile("Bar.png");
+            this.Bar.BackColor = Color.Transparent;
+            this.Bar.Parent = this.map_3;
+            this.Bar.Visible = false;
+            //遊戲音樂
             axWindowsMediaPlayer1.URL = "music.mp3";
             axWindowsMediaPlayer2.URL = "Coin_Sound.mp3";
             axWindowsMediaPlayer2.settings.volume = 100;
@@ -248,6 +288,14 @@ namespace Mario
             axWindowsMediaPlayer4.settings.volume = 100;
             axWindowsMediaPlayer4.settings.rate = 1;
             axWindowsMediaPlayer4.Ctlcontrols.stop();
+            axWindowsMediaPlayer5.URL = "Mushroom_Sound.mp3";
+            axWindowsMediaPlayer5.settings.volume = 30;
+            axWindowsMediaPlayer5.settings.rate = 1;
+            axWindowsMediaPlayer5.Ctlcontrols.stop();
+            axWindowsMediaPlayer6.URL = "Victory_Sound.mp3";
+            axWindowsMediaPlayer6.settings.volume = 70;
+            axWindowsMediaPlayer6.settings.rate = 1;
+            axWindowsMediaPlayer6.Ctlcontrols.stop();
             server.Disconnect();
         }
 
@@ -358,15 +406,48 @@ namespace Mario
             if (block.Left - 4 <= player.Right && block.Right >= player.Right && block.Top <= player.Bottom - 4 && block.Bottom >= player.Top)
             {
                 right = false;
-            }
-            //Left Side Collision
-            if (block.Right + 6 >= player.Left && block.Left <= player.Left && block.Top <= player.Bottom - 4 && block.Bottom >= player.Top)
+                timer8.Enabled = false;
+            } //Left Side Collision
+            else if (block.Right + 7 >= player.Left && block.Left <= player.Left && block.Top <= player.Bottom - 4 && block.Bottom >= player.Top)
             {
                 left = false;
+                timer8.Enabled = false;
+            }
+            else 
+            {
+                timer8.Enabled = true;
+            }
+
+            if (mapchange == 3)
+            {
+                if (player.Right >= 788 && player.Left <= 810)
+                {
+                    right = false;
+                    left = false;
+                    jump = false;
+                    gameover = 1;
+                    timer15.Enabled = true;
+                    timer14.Enabled = false;
+                    timer13.Enabled = false;
+                    timer12.Enabled = false;
+                    timer11.Enabled = false;
+                    timer10.Enabled = false;
+                    timer9.Enabled = false;
+                    timer8.Enabled = false;
+                    timer7.Enabled = false;
+                    timer6.Enabled = false;
+                    timer5.Enabled = false;
+                    timer4.Enabled = false;
+                    timer3.Enabled = false;
+                    timer2.Enabled = false;
+                    timer1.Enabled = false;
+                }
             }
         }
+
         private void tbcollision(PictureBox player, PictureBox block,int coin,bool check,int state)
         {
+            
             // Top Side Collision
             if (player.Left + player.Width >= block.Left && player.Left + player.Width <= block.Left + block.Width + player.Width && player.Top + player.Height >= block.Top && player.Top <= block.Top)
             {
@@ -487,10 +568,25 @@ namespace Mario
             rlcollision(something, Box7);
             rlcollision(something, Rock4);
             rlcollision(something, Rock5);
+            //map3
+            rlcollision(something, Rock2_1);
+            rlcollision(something, Rock2_2);
+            rlcollision(something, Rock2_3);
+            rlcollision(something, Rock2_4);
+            rlcollision(something, Rock2_5);
+            rlcollision(something, Rock2_6);
+            rlcollision(something, Rock2_7);
+            rlcollision(something, Rock2_8);
+            if (mapchange == 3)
+            {
+                rlcollision(something, Bar);
+                rlcollision(something, Head);
+            }
         }
 
         private void Alltbcollision(PictureBox something, int state)
         {
+            //state 角色狀態 ture & false 錢幣
             //map1
             tbcollision(something, Box1, 1, true, state);
             tbcollision(something, Box2, 2, true, state);
@@ -505,6 +601,17 @@ namespace Mario
             tbcollision(something, Box7, 7, true, state);
             tbcollision(something, Rock4, 4, false, state);
             tbcollision(something, Rock5, 5, false, state);
+            //map3
+            tbcollision(something, Rock2_1, 1, false, state);
+            tbcollision(something, Rock2_2, 1, false, state);
+            tbcollision(something, Rock2_3, 1, false, state);
+            tbcollision(something, Rock2_4, 1, false, state);
+            tbcollision(something, Rock2_5, 1, false, state);
+            tbcollision(something, Rock2_6, 1, false, state);
+            tbcollision(something, Rock2_7, 1, false, state);
+            tbcollision(something, Rock2_8, 1, false, state);
+            tbcollision(something, Bar, 1, false, state);
+            tbcollision(something, Head, 1, false, state);
         }
 
         private void dropposition(PictureBox player, PictureBox block)
@@ -559,7 +666,7 @@ namespace Mario
         {
             if (mapchange == 2)
             {
-                if (player.Left >= 826 && player.Right - player.Width <= 931 && player.Bottom >= pictureBox2.Height - background_1.Height)
+                if (player.Left >= 826 && player.Right - player.Width <= 931 && player.Bottom >= map_2.Height - background_1.Height)
                 {
                     jumpchange = 2;
                     timer9.Enabled = true;
@@ -575,7 +682,7 @@ namespace Mario
         {
             if (mapchange == 2)
             {
-                if (player.Left >= 826 && player.Right - player.Width <= 931 && player.Bottom >= pictureBox2.Height - background_1.Height)
+                if (player.Left >= 826 && player.Right - player.Width <= 931 && player.Bottom >= map_2.Height - background_1.Height)
                 {
                     jumpchange = 2;
                     timer9.Enabled = true;
@@ -611,12 +718,10 @@ namespace Mario
                     {
                         if (mapchange == 2)
                         {
-                            map02off();
-                            //map03on();
+                            map03on();
                         }
                         else
                         {
-                            map01off();
                             map02on();
                         }
                         this.player.Parent = pictureBox2;
@@ -644,11 +749,10 @@ namespace Mario
                     {
                         if (mapchange == 2)
                         {
-                            map02off();
+                            map03on();
                         }
                         else
                         {
-                            map01off();
                             map02on();
                         }
                         this.player.Parent = pictureBox2;
@@ -755,15 +859,25 @@ namespace Mario
         {
             if (right == true)
             {
-                if (screen.Left > 200)
+                if (screen.Left > 0)
                 {
                     before.Left -= 3;
                     screen.Left -= 3;
                     pictureBox2.Left -= 3;
+                    player.Left -= 1;
                 }
-                if (before.Left <= 40)
+                else
+                {
+                }
+                if (before.Left <= 0)
                 {
                     screen.Width = 1270;
+                }
+                else if (before.Left > 0)
+                {
+                    before.Left -= 3;
+                    screen.Left -= 3;
+                    pictureBox2.Left -= 3;
                 }
                 if (player.Left + 15 >= 1230)
                 {
@@ -856,6 +970,7 @@ namespace Mario
             Rock3.Left = 577;
             Rock3.Top = 496;
             map02off();
+            map03off();
             mapchange = 0;
             //map2
             /*Box1.Enabled = true;Box2.Enabled = true;Box3.Enabled = true;Box4.Enabled = true;Coin.Enabled = true;Coin2.Enabled = true;Coin3.Enabled = true;Coin4.Enabled = true;Rock.Enabled = true;Rock2.Enabled = true;Rock3.Enabled = true;Box1.Visible = true;Box2.Visible = true;Box3.Visible = true;Box4.Visible = true;Coin.Visible = true;Coin2.Visible = true;Coin3.Visible = true;Coin4.Visible = true;Rock.Visible = true;Rock2.Visible = true;Rock3.Visible = true;*/
@@ -891,8 +1006,62 @@ namespace Mario
             Rock5.Height = 33;
             Rock5.Left = 528;
             Rock5.Top = 497;
+            mushroom.Height = 28;
+            mushroom.Width = 28;
+            mushroom.Left = 460;
+            mushroom.Top = 340;
+            map01off();
             mapchange = 2;
         }
+
+        private void map03on()
+        {
+            Rock2_1.Width = 455;
+            Rock2_1.Height = 33;
+            Rock2_1.Left = 188;
+            Rock2_1.Top = 593;
+            Rock2_2.Width = 417;
+            Rock2_2.Height = 33;
+            Rock2_2.Left = 226;
+            Rock2_2.Top = 560;
+            Rock2_3.Width = 379;
+            Rock2_3.Height = 33;
+            Rock2_3.Left = 264;
+            Rock2_3.Top = 527;
+            Rock2_4.Width = 341;
+            Rock2_4.Height = 33;
+            Rock2_4.Left = 302;
+            Rock2_4.Top = 496;
+            Rock2_5.Width = 303;
+            Rock2_5.Height = 33;
+            Rock2_5.Left = 340;
+            Rock2_5.Top = 464;
+            Rock2_6.Width = 265;
+            Rock2_6.Height = 33;
+            Rock2_6.Left = 378;
+            Rock2_6.Top = 433;
+            Rock2_7.Width = 227;
+            Rock2_7.Height = 33;
+            Rock2_7.Left = 416;
+            Rock2_7.Top = 400;
+            Rock2_8.Width = 189;
+            Rock2_8.Height = 33;
+            Rock2_8.Left = 454;
+            Rock2_8.Top = 368;
+            Bar.Width = 7;
+            Bar.Height = 438;
+            Bar.Left = 796;
+            Bar.Top = 189;
+            Bar.Visible = true;
+            Head.Width = 18;
+            Head.Height = 19;
+            Head.Left = 791;
+            Head.Top = 176;
+            Head.Visible = true;
+            map02off();
+            mapchange = 3;
+        }
+
         private void map01off()
         {
             Box1.Width = 0;
@@ -975,6 +1144,53 @@ namespace Mario
             mapchange = 3;
         }
 
+        private void map03off()
+        {
+            Rock2_1.Width = 0;
+            Rock2_1.Height = 0;
+            Rock2_1.Left = 0;
+            Rock2_1.Top = 0;
+            Rock2_2.Width = 0;
+            Rock2_2.Height = 0;
+            Rock2_2.Left = 0;
+            Rock2_2.Top = 0;
+            Rock2_3.Width = 0;
+            Rock2_3.Height = 0;
+            Rock2_3.Left = 0;
+            Rock2_3.Top = 0;
+            Rock2_4.Width = 0;
+            Rock2_4.Height = 0;
+            Rock2_4.Left = 0;
+            Rock2_4.Top = 0;
+            Rock2_5.Width = 0;
+            Rock2_5.Height = 0;
+            Rock2_5.Left = 0;
+            Rock2_5.Top = 0;
+            Rock2_6.Width = 0;
+            Rock2_6.Height = 0;
+            Rock2_6.Left = 0;
+            Rock2_6.Top = 0;
+            Rock2_7.Width = 0;
+            Rock2_7.Height = 0;
+            Rock2_7.Left = 0;
+            Rock2_7.Top = 0;
+            Rock2_8.Width = 0;
+            Rock2_8.Height = 0;
+            Rock2_8.Left = 0;
+            Rock2_8.Top = 0;
+            Bar.Width = 0;
+            Bar.Height = 0;
+            Bar.Left = 0;
+            Bar.Top = 0;
+            Bar.Visible = false;
+            Head.Width = 0;
+            Head.Height = 0;
+            Head.Left = 0;
+            Head.Top = 0;
+            Head.Visible = false;
+            mapchange = 3;
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             Allrlcollision(player);
@@ -986,7 +1202,7 @@ namespace Mario
                 {
                     dropholeRight(player);
                 }
-                this.player.Left += 7;
+                this.player.Left += 6;
 
             }
             //只按左鍵
@@ -996,7 +1212,7 @@ namespace Mario
                 {
                     dropholeLeft(player);
                 }
-                this.player.Left -= 7;
+                this.player.Left -= 6;
             } 
             
             if (jump == true)
@@ -1006,9 +1222,9 @@ namespace Mario
             }
             if (map > 1)
             {
-                if (player.Right - player.Width*2 >= pictureBox1.Right)
+                if (player.Right - player.Width*2 >= map_3.Right)
                 {
-                    player.Left = pictureBox1.Right - player.Width*2;
+                    player.Left = map_3.Right - player.Width*2;
                 }
             }
             
@@ -1222,23 +1438,23 @@ namespace Mario
         {
             if (map == 0)
             {
-                changemap(none,screen, pictureBox2 , pictureBox1);         
+                changemap(none,screen, map_2 , map_3);         
             }
             else if (map == 1)
             {
-                pictureBox1.Visible = true;                
-                changemap(screen,pictureBox2, pictureBox1,none);
+                map_3.Visible = true;                
+                changemap(screen,map_2, map_3,none);
             }
             else
             {
-                changemap2(pictureBox2, pictureBox1, screen, none);
+                changemap2(map_2, map_3, screen, none);
             }
         }
 
         private void timer9_Tick(object sender, EventArgs e)
         {
             player.Top += 5;
-            if (player.Bottom >= pictureBox2.Height)
+            if (player.Bottom >= map_2.Height)
             {
                 player.Image = Image.FromFile("die.gif"); 
                 gameover = 1;
@@ -1290,7 +1506,7 @@ namespace Mario
             }
             else if (replay2 == 0)
             {
-                player.Top = pictureBox2.Height - background_1.Height*2;
+                player.Top = map_2.Height - background_1.Height*2;
                 replay2++;
             }
             else
@@ -1676,6 +1892,8 @@ namespace Mario
             ++grow;
             player.Top -= 2;
             player.Height += 2;
+            //axWindowsMediaPlayer1.Ctlcontrols.stop();
+            axWindowsMediaPlayer5.Ctlcontrols.play();
             if (judge == "Smallstand_r.png")
             {
                 player.Image = Image.FromFile("Smallstand_r" + grow + ".png");
@@ -1703,6 +1921,7 @@ namespace Mario
                 right = false;
                 left = false;
                 jump = false;
+                //axWindowsMediaPlayer1.Ctlcontrols.play();
                 timer1.Enabled = true;
                 timer8.Enabled = true;
                 timer12.Enabled = false;                
@@ -1796,6 +2015,55 @@ namespace Mario
             else
             {
                 player.Top -= 5;
+            }
+        }
+
+        private void timer15_Tick(object sender, EventArgs e)
+        {
+            axWindowsMediaPlayer1.Ctlcontrols.stop();
+            axWindowsMediaPlayer6.Ctlcontrols.play();
+            if (player.Left < 796 - player.Width)
+            {
+                map_3.Left = 0;
+                map_3.Width = 1270;
+                player.Image = Image.FromFile("Catchbar_r.png");
+                player.Left = 796 - player.Width + 5;
+                judge = "Catchbar_r.png";
+            }
+            else
+            {
+                if (player.Top <= background_1.Top - player.Height)
+                {
+                    player.Top += 5;
+                }
+                else
+                {
+                    if (judge == "Catchbar_r.png")
+                    {
+                        player.Image = Image.FromFile("Smallstand_r.png");
+                        judge = "Smallstand_r.png";
+                    }
+                    else if (judge == "Smallstand_r.png")
+                    {
+                        timer15.Interval = 150;
+                        player.Image = Image.FromFile("Smallwalk_r.gif");
+                        player.Left += 15;
+                        judge = "Smallwalk_r.gif";
+                    }
+                    else if (judge == "Smallwalk_r.gif")
+                    {
+                        judge = "Smallstand_r.png";
+                    }
+                    if (player.Left >= 1026)
+                    {
+                        player.Image = Image.FromFile("YA.png");
+                        judge = "Smallstand_r.png";
+                        timer15.Enabled = false;
+                        MessageText = "恭喜過關!\n持有金錢和分數將累計到下一關!\n生命和時間將重新計算!";
+                        MessageBox.Show(MessageText, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.Close();
+                    }
+                }
             }
         }
     }
